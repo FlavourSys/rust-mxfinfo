@@ -1,3 +1,4 @@
+#![allow(unused)]
 use ffi::types::MXFkey;
 
 /* Extension data model */
