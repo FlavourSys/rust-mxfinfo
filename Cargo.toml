@@ -16,6 +16,7 @@ exclude = [
 [dependencies]
 libc = "0.1"
 num-rational = "0.2"
+num-traits = "0.2"
 
 [build-dependencies.pkg-config]
 version = "0.3.9"

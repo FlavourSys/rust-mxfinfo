@@ -15,7 +15,7 @@ macro_rules! mxf_item_k {
 macro_rules! mxf_set_definition {
     ($name: ident, $o0: tt, $o1: tt, $o2: tt, $o3: tt, $o4: tt, $o5: tt, $o6: tt, $o7: tt,
      $o8: tt, $o9: tt, $o10: tt, $o11: tt, $o12: tt, $o13: tt, $o14: tt, $o15: tt) => (
-        pub const $name: MXFkey = MXFkey {
+        pub const $name: MXFKey = MXFKey {
             octet0: $o0,
             octet1: $o1,
             octet2: $o2,
@@ -39,7 +39,7 @@ macro_rules! mxf_set_definition {
 macro_rules! mxf_item_definition {
     ($name: ident, $o0: tt, $o1: tt, $o2: tt, $o3: tt, $o4: tt, $o5: tt, $o6: tt, $o7: tt,
      $o8: tt, $o9: tt, $o10: tt, $o11: tt, $o12: tt, $o13: tt, $o14: tt, $o15: tt) => (
-        pub const $name: MXFkey = MXFkey {
+        pub const $name: MXFKey = MXFKey {
             octet0: $o0,
             octet1: $o1,
             octet2: $o2,

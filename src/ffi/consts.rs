@@ -1,5 +1,5 @@
 #![allow(unused)]
-use ffi::types::MXFkey;
+use ffi::types::MXFKey;
 
 /* Extension data model */
 mxf_set_definition!(

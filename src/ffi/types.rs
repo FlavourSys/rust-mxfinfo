@@ -18,6 +18,7 @@ pub type c_void  = libc::c_void;
 pub enum MXFFile {}
 pub enum MXFDataModel {}
 pub enum MXFPrimerPack {}
+pub type MXFLength = int64;
 
 pub enum AvidPhysicalPackageType {
     UnkownPhysType,
@@ -148,26 +149,11 @@ impl fmt::Debug for AvidEssenceType {
         write!(f, "{}", self)
     }
 }
-#[repr(C)]
-#[derive(Debug)]
-pub struct AvidNameValuePair {
-    pub name: *mut c_char,
-    pub value: *mut c_char,
-}
-
-#[repr(C)]
-#[derive(Debug)]
-pub struct AvidTaggedValue {
-    pub name: *mut c_char,
-    pub value: *mut c_char,
-    pub atributes: *mut AvidNameValuePair,
-    pub num_attributes: c_int,
-}
 
 /* MXF Key */
 #[repr(C)]
-#[derive(Default)]
-pub struct MXFkey {
+#[derive(Default, Clone)]
+pub struct MXFKey {
     pub octet0: libc::uint8_t,
     pub octet1: libc::uint8_t,
     pub octet2: libc::uint8_t,
@@ -186,7 +172,40 @@ pub struct MXFkey {
     pub octet15: libc::uint8_t,
 }
 
-impl std::fmt::Debug for MXFkey {
+impl MXFKey {
+    pub fn new(o0: u8, o1: u8, o2: u8, o3: u8, o4: u8, o5: u8, o6: u8, o7: u8,
+           o8: u8, o9: u8, o10: u8, o11: u8, o12: u8, o13: u8, o14: u8, o15: u8) -> MXFKey {
+        MXFKey {
+            octet0: o0,
+            octet1: o1,
+            octet2: o2,
+            octet3: o3,
+            octet4: o4,
+            octet5: o5,
+            octet6: o6,
+            octet7: o7,
+            octet8: o8,
+            octet9: o9,
+            octet10: o10,
+            octet11: o11,
+            octet12: o12,
+            octet13: o13,
+            octet14: o14,
+            octet15: o15,
+        }
+    }
+}
+
+impl std::cmp::PartialEq for MXFKey {
+    fn eq(&self, other: &MXFKey) -> bool {
+        self.octet0 == other.octet0 && self.octet1 == other.octet1 && self.octet2 == other.octet2 && self.octet3 == other.octet3 && self.octet4 == other.octet4 &&
+            self.octet5 == other.octet5 && self.octet6 == other.octet6 && self.octet7 == other.octet7 && self.octet8 == other.octet8 && self.octet9 == other.octet9 &&
+            self.octet10 == other.octet10 && self.octet11 == other.octet11 && self.octet12 == other.octet12 && self.octet13 == other.octet13 && self.octet14 == other.octet14 &&
+            self.octet15 == other.octet15
+    }
+}
+
+impl std::fmt::Debug for MXFKey {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}",
                self.octet0, self.octet1, self.octet2, self.octet3, self.octet4, self.octet5, self.octet6, self.octet7,
@@ -196,7 +215,7 @@ impl std::fmt::Debug for MXFkey {
 
 #[repr(C)]
 #[derive(Default)]
-pub struct MXFumid {
+pub struct MXFUmid {
     pub octet0: libc::uint8_t,
     pub octet1: libc::uint8_t,
     pub octet2: libc::uint8_t,
@@ -231,7 +250,62 @@ pub struct MXFumid {
     pub octet31: libc::uint8_t,
 }
 
-impl std::fmt::Debug for MXFumid {
+impl MXFUmid {
+    pub fn new(o0: u8, o1: u8, o2: u8, o3: u8, o4: u8, o5: u8, o6: u8, o7: u8,
+           o8: u8, o9: u8, o10: u8, o11: u8, o12: u8, o13: u8, o14: u8, o15: u8,
+           o16: u8, o17: u8, o18: u8, o19: u8, o20: u8, o21: u8, o22: u8, o23: u8,
+           o24: u8, o25: u8, o26: u8, o27: u8, o28: u8, o29: u8, o30: u8, o31: u8) -> MXFUmid {
+        MXFUmid {
+            octet0: o0,
+            octet1: o1,
+            octet2: o2,
+            octet3: o3,
+            octet4: o4,
+            octet5: o5,
+            octet6: o6,
+            octet7: o7,
+            octet8: o8,
+            octet9: o9,
+            octet10: o10,
+            octet11: o11,
+            octet12: o12,
+            octet13: o13,
+            octet14: o14,
+            octet15: o15,
+            octet16: o16,
+            octet17: o17,
+            octet18: o18,
+            octet19: o19,
+            octet20: o20,
+            octet21: o21,
+            octet22: o22,
+            octet23: o23,
+            octet24: o24,
+            octet25: o25,
+            octet26: o26,
+            octet27: o27,
+            octet28: o28,
+            octet29: o29,
+            octet30: o30,
+            octet31: o31,
+        }
+    }
+}
+
+
+impl std::cmp::PartialEq for MXFUmid {
+    fn eq(&self, other: &MXFUmid) -> bool {
+        self.octet0 == other.octet0 && self.octet1 == other.octet1 && self.octet2 == other.octet2 && self.octet3 == other.octet3 && self.octet4 == other.octet4 &&
+            self.octet5 == other.octet5 && self.octet6 == other.octet6 && self.octet7 == other.octet7 && self.octet8 == other.octet8 && self.octet9 == other.octet9 &&
+            self.octet10 == other.octet10 && self.octet11 == other.octet11 && self.octet12 == other.octet12 && self.octet13 == other.octet13 && self.octet14 == other.octet14 &&
+            self.octet15 == other.octet15 && self.octet16 == other.octet16 && self.octet16 == other.octet16 && self.octet17 == other.octet17 && self.octet18 == other.octet18 &&
+            self.octet19 == other.octet19 && self.octet20 == other.octet20 && self.octet21 == other.octet21 && self.octet22 == other.octet22 && self.octet23 == other.octet23 &&
+            self.octet24 == other.octet24 && self.octet25 == other.octet25 && self.octet26 == other.octet26 && self.octet27 == other.octet27 && self.octet28 == other.octet28 &&
+            self.octet29 == other.octet29 && self.octet30 == other.octet30 && self.octet31 == other.octet31
+    }
+}
+
+impl std::fmt::Debug for MXFUmid {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}{:x}",
                self.octet0, self.octet1, self.octet2, self.octet3, self.octet4, self.octet5, self.octet6, self.octet7,
@@ -282,7 +356,7 @@ impl Default for MXFListElement {
 }
 
 /* MXF List Iterator */
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 #[repr(C)]
 pub struct MXFListIterator {
     pub next: *mut MXFListElement,
@@ -304,31 +378,31 @@ impl Default for MXFListIterator {
 #[repr(C)]
 #[derive(Debug, Default)]
 pub struct MXFPartition {
-    key: MXFkey,
-    major_version: uint16,
-    minor_version: uint16,
-    kag_size: uint32,
-    this_partition: uint64,
-    previous_partition: uint64,
-    footer_partition: uint64,
+    pub key: MXFKey,
+    pub major_version: uint16,
+    pub minor_version: uint16,
+    pub kag_size: uint32,
+    pub this_partition: uint64,
+    pub previous_partition: uint64,
+    pub footer_partition: uint64,
     pub header_byte_count: uint64,
-    index_byte_count: uint64,
-    indes_sid: uint32,
-    body_offset: uint64,
-    body_sid: uint32,
-    pub operational_pattern: MXFkey,
-    essence_containers: MXFList,
-    header_mark_in_pos: int64,
-    index_mark_in_pos: int64,
+    pub index_byte_count: uint64,
+    pub indes_sid: uint32,
+    pub body_offset: uint64,
+    pub body_sid: uint32,
+    pub operational_pattern: MXFKey,
+    pub essence_containers: MXFList,
+    pub header_mark_in_pos: int64,
+    pub index_mark_in_pos: int64,
 }
 
 /* MXF Header Metadata */
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub struct MXFHeaderMetadata {
-    datamodel: *mut MXFDataModel,
-    primerpack: *mut MXFPrimerPack,
-    sets: MXFList,
+    pub datamodel: *mut MXFDataModel,
+    pub primerpack: *mut MXFPrimerPack,
+    pub sets: MXFList,
 }
 
 impl std::fmt::Debug for MXFHeaderMetadata {
@@ -356,8 +430,8 @@ impl Default for MXFHeaderMetadata {
 /* MXF Metadata Set */
 #[repr(C)]
 pub struct MXFMetadataSet {
-    pub key: MXFkey,
-    pub instance_uid: MXFkey,
+    pub key: MXFKey,
+    pub instance_uid: MXFKey,
     pub items: MXFList,
     pub header_metadata: *mut MXFHeaderMetadata,
     pub fixed_space_allocation: uint64,
@@ -378,12 +452,45 @@ impl std::fmt::Debug for MXFMetadataSet {
     }
 }
 
+/* MXF Metadata Item */
+#[derive(Debug)]
+#[repr(C)]
+pub struct MXFMetadataItem {
+    pub key: MXFKey,
+    pub tag: uint16,
+    pub is_persistent: c_int,
+    pub length: uint16,
+    pub value: *mut uint8,
+    pub set: *mut MXFMetadataSet,
+}
+
+/* MXF Array Item Iterator */
+#[derive(Debug)]
+#[repr(C)]
+pub struct MXFArrayItemIterator {
+    pub item: *mut MXFMetadataItem,
+    pub element_count: uint32,
+    pub curr_length: uint32,
+    pub curr_index: uint32,
+}
+
+impl Default for MXFArrayItemIterator {
+    fn default() -> MXFArrayItemIterator {
+        MXFArrayItemIterator {
+            item: ptr::null_mut(),
+            element_count: 0,
+            curr_length: 0,
+            curr_index: 0,
+        }
+    }
+}
+
 /* MXF Rational */
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Default)]
 pub struct MXFRational {
-    numerator: int32,
-    denominator: int32,
+    pub numerator: int32,
+    pub denominator: int32,
 }
 
 /* MXF Timestamp */
